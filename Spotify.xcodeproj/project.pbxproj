@@ -30,6 +30,8 @@
 		1DF041E12A1297C70047E214 /* AudioTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF041E02A1297C70047E214 /* AudioTrack.swift */; };
 		1DF041E32A1297CD0047E214 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF041E22A1297CD0047E214 /* Artist.swift */; };
 		1DF041E52A1297DB0047E214 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF041E42A1297DB0047E214 /* UserProfile.swift */; };
+		1DF041E82A12E7310047E214 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF041E72A12E7310047E214 /* Extensions.swift */; };
+		1DF041EA2A1308E00047E214 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF041E92A1308E00047E214 /* AuthResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +61,8 @@
 		1DF041E22A1297CD0047E214 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		1DF041E42A1297DB0047E214 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		1DF041E62A129B430047E214 /* secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = secrets.xcconfig; sourceTree = "<group>"; };
+		1DF041E72A12E7310047E214 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1DF041E92A1308E00047E214 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +132,7 @@
 				1DF041E02A1297C70047E214 /* AudioTrack.swift */,
 				1DF041E22A1297CD0047E214 /* Artist.swift */,
 				1DF041E42A1297DB0047E214 /* UserProfile.swift */,
+				1DF041E92A1308E00047E214 /* AuthResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -155,6 +160,7 @@
 				1DF041A22A1295230047E214 /* AppDelegate.swift */,
 				1DF041A42A1295230047E214 /* SceneDelegate.swift */,
 				1DF041AB2A1295240047E214 /* Assets.xcassets */,
+				1DF041E72A12E7310047E214 /* Extensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -263,11 +269,13 @@
 				1DF041BE2A12968D0047E214 /* TabBarViewController.swift in Sources */,
 				1DF041A72A1295230047E214 /* HomeViewController.swift in Sources */,
 				1DF041DD2A12977E0047E214 /* HapticsManager.swift in Sources */,
+				1DF041EA2A1308E00047E214 /* AuthResponse.swift in Sources */,
 				1DF041E12A1297C70047E214 /* AudioTrack.swift in Sources */,
 				1DF041CB2A1296F60047E214 /* AuthViewController.swift in Sources */,
 				1DF041A32A1295230047E214 /* AppDelegate.swift in Sources */,
 				1DF041C62A1296D10047E214 /* LibraryViewController.swift in Sources */,
 				1DF041E52A1297DB0047E214 /* UserProfile.swift in Sources */,
+				1DF041E82A12E7310047E214 /* Extensions.swift in Sources */,
 				1DF041D52A1297300047E214 /* PlaylistViewController.swift in Sources */,
 				1DF041E32A1297CD0047E214 /* Artist.swift in Sources */,
 				1DF041A52A1295230047E214 /* SceneDelegate.swift in Sources */,
@@ -302,6 +310,7 @@
 /* Begin XCBuildConfiguration section */
 		1DF041B12A1295240047E214 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1DF041E62A129B430047E214 /* secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -362,6 +371,7 @@
 		};
 		1DF041B22A1295240047E214 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1DF041E62A129B430047E214 /* secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
