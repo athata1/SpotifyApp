@@ -84,7 +84,7 @@ class ProfileViewController: UIViewController {
     }
     
     private func failedToGetProfile() {
-        var label = UILabel(frame: .zero)
+        let label = UILabel(frame: .zero)
         label.text = "Failed to load profile."
         label.sizeToFit()
         label.textColor = .secondaryLabel

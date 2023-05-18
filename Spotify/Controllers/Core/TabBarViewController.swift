@@ -13,6 +13,7 @@ class TabBarViewController: UITabBarController {
         super.viewDidLoad()
 
         let tabBarAppearance = UITabBarAppearance()
+        UITabBar.appearance().tintColor = UIColor(red: 29.0/255.0, green: 185.0/255.0, blue: 84.0/255.0, alpha: 1.0)
         tabBarAppearance.configureWithOpaqueBackground()
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         
@@ -36,6 +37,12 @@ class TabBarViewController: UITabBarController {
         let nav1 = UINavigationController(rootViewController: vc1)
         let nav2 = UINavigationController(rootViewController: vc2)
         let nav3 = UINavigationController(rootViewController: vc3)
+        
+        let spotifyGreen = UIColor(red: 29.0/255.0, green: 185.0/255.0, blue: 84.0/255.0, alpha: 1.0)
+        
+        nav1.navigationBar.tintColor = spotifyGreen
+        nav2.navigationBar.tintColor = spotifyGreen
+        nav3.navigationBar.tintColor = spotifyGreen
         
         nav1.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 1)
         nav2.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 2)
