@@ -1,44 +1,45 @@
 //
-//  PlaylistViewController.swift
+//  AlbumViewController.swift
 //  Spotify
 //
-//  Created by Akhil Thata on 5/15/23.
+//  Created by Akhil Thata on 5/20/23.
 //
 
 import UIKit
 
-class PlaylistViewController: UIViewController {
-
-    private var playlist: Playlist
+class AlbumViewController: UIViewController {
+    
+    private var album: Album
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = playlist.name
+        title = album.name
         view.backgroundColor = .systemBackground
         
         fetchData()
     }
     
-    public func fetchData() {
-        APICaller.shared.getPlaylistDetails(for: playlist) { result in
+    private func fetchData() {
+        APICaller.shared.getAlbumDetails(for: album) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let model):
-                    break;
+                    break
                 case .failure(let error):
-                    print(error)
+                    print(error.localizedDescription)
+                    break
                 }
             }
         }
     }
     
-    init(playlist: Playlist) {
-        self.playlist = playlist
+    init(album: Album) {
+        self.album = album
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }
