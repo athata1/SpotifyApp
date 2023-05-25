@@ -22,11 +22,14 @@ final class APICaller {
         case failedToGetData
     }
     
-    // MARK: Album
-    public func getAlbumDetails(for album: Album, completion: @escaping ((Result<AlbumDetailsResponse, Error>) -> Void)) {
-        createRequest(with: URL(string: "\(Constants.baseAPIURL)/albums/\(album.id)"), type: .GET) { request in
+    public func fetchData<T: Decodable>(from url: URL?, responseType: T.Type, requestType: HTTPMethod, completion: @escaping (Result<T, Error>) -> Void) {
+        guard let url = url else {
+            completion(.failure(APIError.failedToGetData))
+            return
+        }
+        
+        createRequest(with: url, type: requestType) { request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
-
                 guard let data = data, error == nil else {
                     completion(.failure(APIError.failedToGetData))
                     return
@@ -37,13 +40,11 @@ final class APICaller {
                     /*let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
                     print(json)*/
                     
-                    let result = try JSONDecoder().decode(AlbumDetailsResponse.self, from: data)
+                    let result = try JSONDecoder().decode(responseType, from: data)
                     //print(result)
                     completion(.success(result))
-                    
-                }
-                catch {
-                    print("Album Details: \(error)")
+                } catch {
+                    print("\(T.self): \(error)")
                     completion(.failure(error))
                 }
             }
@@ -51,10 +52,16 @@ final class APICaller {
         }
     }
     
+    // MARK: Album
+    public func getAlbumDetails(for album: Album, completion: @escaping ((Result<AlbumDetailsResponse, Error>) -> Void)) {
+        let url: URL? = URL(string: "\(Constants.baseAPIURL)/albums/\(album.id)")
+        fetchData(from: url, responseType: AlbumDetailsResponse.self,requestType: .GET, completion: completion)
+    }
+    
     // MARK: Playlists
     
     public func getPlaylistDetails(for playlist: Playlist, completion: @escaping ((Result<PlaylistDetailsResponse, Error>) -> Void)) {
-        createRequest(with: URL(string: "\(Constants.baseAPIURL)/playlists/\(playlist.id)"), type: .GET) { request in
+        /*createRequest(with: URL(string: "\(Constants.baseAPIURL)/playlists/\(playlist.id)"), type: .GET) { request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
 
                 guard let data = data, error == nil else {
@@ -78,7 +85,9 @@ final class APICaller {
                 }
             }
             task.resume()
-        }
+        }*/
+        let url = URL(string: "\(Constants.baseAPIURL)/playlists/\(playlist.id)")
+        self.fetchData(from: url, responseType: PlaylistDetailsResponse.self,requestType: .GET, completion: completion)
     }
     
     // MARK: Browse
