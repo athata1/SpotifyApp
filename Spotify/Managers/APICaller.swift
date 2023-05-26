@@ -37,8 +37,10 @@ final class APICaller {
                 
                 do {
                     
-                    /*let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                    print(json)*/
+                    let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                    if (T.self == String.self) {
+                        print(json)
+                    }
                     
                     let result = try JSONDecoder().decode(responseType, from: data)
                     //print(result)
@@ -50,6 +52,17 @@ final class APICaller {
             }
             task.resume()
         }
+    }
+    
+    public func getCategoryPlaylists(category: Category, completion: @escaping ((Result<CategoryPlaylistResponse, Error>) -> Void)) {
+        let url: URL? = URL(string: "\(Constants.baseAPIURL)/browse/categories/\(category.id)/playlists?limit=50")
+        fetchData(from: url, responseType: CategoryPlaylistResponse.self, requestType: .GET, completion: completion)
+    }
+    
+    // MARK: Search Query
+    public func getCategories(completion: @escaping ((Result<AllCategoriesResponse, Error>) -> Void)) {
+        let url: URL? = URL(string:"\(Constants.baseAPIURL)/browse/categories")
+        fetchData(from: url, responseType: AllCategoriesResponse.self, requestType: .GET, completion: completion)
     }
     
     // MARK: Album
