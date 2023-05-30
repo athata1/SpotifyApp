@@ -7,11 +7,11 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UISearchResultsUpdating {
+class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate {
 
     let searchController: UISearchController = {
         let results = SearchResultViewController()
-        results.view.backgroundColor = .red
+        results.view.backgroundColor = .clear
         let vc = UISearchController(searchResultsController: results)
         vc.searchBar.placeholder = "Songs, Artists, Albums"
         vc.searchBar.searchBarStyle = .minimal
@@ -51,7 +51,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating {
         // Do any additional setup after loading the view.
         searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
-        
+        searchController.searchBar.delegate = self
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -60,6 +60,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating {
         collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
         
         fetchData()
+        
     }
     
     public func fetchData() {
@@ -78,21 +79,49 @@ class SearchViewController: UIViewController, UISearchResultsUpdating {
         }
     }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        guard let resultsController = searchController.searchResultsController as? SearchResultViewController, let searchQuery = searchController.searchBar.text,
+              !searchQuery.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
+        }
+        
+        resultsController.delegate = self
+        
+        APICaller.shared.search(with: searchQuery) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let results):
+                    resultsController.update(with: results)
+                    break
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    break
+                }
+            }
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let resultsController = searchController.searchResultsController as? SearchResultViewController, let searchQuery = searchController.searchBar.text,
-              !searchQuery.trimmingCharacters(in: .whitespaces).isEmpty else {
-            return
-        }
-        
-        //Perform search
-        print(searchQuery)
+
     }
 }
+
+
+
+extension SearchViewController: SearchResultViewControllerDelegate {
+    func didTapResult(_ controller: UIViewController) {
+        controller.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(controller, animated: true)
+        
+    }
+}
+
 
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
