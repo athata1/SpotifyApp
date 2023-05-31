@@ -74,7 +74,9 @@ class AlbumViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let model):
-                    self?.tracks = model.tracks.items
+                    self?.tracks = model.tracks.items.compactMap({
+                        AudioTrack(album: self?.album, artists: $0.artists, available_markets: $0.available_markets, disc_number: $0.disc_number, duration_ms: $0.duration_ms, explicit: $0.explicit, external_urls: $0.external_urls, id: $0.id, name: $0.name, popularity: $0.popularity, preview_url: $0.preview_url)
+                    })
                     self?.viewModels = model.tracks.items.compactMap({
                         return AlbumCollectionViewCellViewModel(name: $0.name, artistName: $0.artists.first?.name ?? "-", artworkURL: URL(string: self?.album.images.first?.url ?? ""))
                     })
@@ -115,7 +117,8 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         //Play song
-        PlaybackPresenter.startPlayback(from: self, track: tracks[indexPath.row])
+        var track = tracks[indexPath.row]
+        PlaybackPresenter.shared.startPlayback(from: self, track: track)
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -147,6 +150,7 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
         ) as? AlbumTrackCollectionViewCell else {
             return UICollectionViewCell()
         }
+        
         cell.configure(with: viewModels[indexPath.row])
         cell.backgroundColor = .secondarySystemBackground
         return cell
@@ -158,7 +162,7 @@ extension AlbumViewController: PlaylistHeaderCollectionReusableViewDelegate {
        
         // Start Playlist play in queue
         print("Playing all")
-        PlaybackPresenter.startPlayback(from: self, tracks: tracks)
+        PlaybackPresenter.shared.startPlayback(from: self, tracks: tracks)
     }
 }
 

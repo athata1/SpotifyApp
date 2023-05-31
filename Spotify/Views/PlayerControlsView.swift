@@ -12,7 +12,12 @@ protocol PlayerControlsViewDelegate: AnyObject {
     func playerControlsViewDidTapPlayPause(_ playerControlsView: PlayerControlsView);
     func playerControlsViewDidTapForward(_ playerControlsView: PlayerControlsView);
     func playerControlsViewDidTapBackwards(_ playerControlsView: PlayerControlsView);
+    func didSlideVolumeSlider(_ playerControlsView: PlayerControlsView, didSlideSlider value: Float)
+}
 
+struct PlayerControlsViewViewModel {
+    let title: String?
+    let subtitle: String?
 }
 
 final class PlayerControlsView: UIView {
@@ -41,6 +46,8 @@ final class PlayerControlsView: UIView {
         label.font = .systemFont(ofSize: 18, weight: .regular)
         return label
     }()
+    
+    private var isPlaying: Bool = true
     
     let backButton: UIButton = {
         let button = UIButton()
@@ -106,9 +113,14 @@ final class PlayerControlsView: UIView {
         backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
         playPauseButton.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
+        volumeSlider.addTarget(self, action: #selector(didSlideSlider), for: .valueChanged)
 
         
         clipsToBounds = true
+    }
+    
+    @objc func didSlideSlider() {
+        delegate?.didSlideVolumeSlider(self, didSlideSlider: volumeSlider.value)
     }
     
     @objc func didTapBack() {
@@ -116,11 +128,19 @@ final class PlayerControlsView: UIView {
     }
     
     @objc func didTapNext() {
+        print("Tapping next")
         delegate?.playerControlsViewDidTapForward(self)
     }
     
     @objc func didTapPlayPause() {
         delegate?.playerControlsViewDidTapPlayPause(self)
+        
+        isPlaying = !isPlaying
+        
+        let play = UIImage(systemName: "play.fill",withConfiguration: UIImage.SymbolConfiguration(pointSize: 34,weight: .regular))
+        let pause = UIImage(systemName: "pause",withConfiguration: UIImage.SymbolConfiguration(pointSize: 34,weight: .regular))
+
+        playPauseButton.setImage(isPlaying ? pause : play, for: .normal)
     }
     
     required init?(coder: NSCoder) {
@@ -144,4 +164,8 @@ final class PlayerControlsView: UIView {
 
     }
     
+    func configure(with viewModel: PlayerControlsViewViewModel) {
+        nameLabel.text = viewModel.title
+        subtitleLabel.text = viewModel.subtitle
+    }
 }
