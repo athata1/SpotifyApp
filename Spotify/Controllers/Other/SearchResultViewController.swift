@@ -120,6 +120,7 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
             delegate?.didTapResult(vc)
             break
         case .track(model: let model):
+            PlaybackPresenter.startPlayback(from: self, track: model)
             break
         case .playlist(model: let model):
             let vc = PlaylistViewController(playlist: model)
